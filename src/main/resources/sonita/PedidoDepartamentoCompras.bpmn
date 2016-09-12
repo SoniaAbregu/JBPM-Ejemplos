@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_notificacion" structureRef="org.jbpm.examples.sonita.PedidoDepartamentoCompras" />
+
+  <process processType="Private" isExecutable="true" id="com.sample.bpmn" name="PedidoDepartamentoCompras" tns:packageName="defaultPackage" >
+
+    <extensionElements>
+     <tns:import name="org.jbpm.examples.sonita.PedidoDepartamentoCompras" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="notificacion" itemSubjectRef="_notificacion"/>
+
+    <!-- nodes -->
+    <startEvent id="_1"  isInterrupting="true"/>
+    <scriptTask id="_jbpm-unique-65" name="Notificar Aprobación" scriptFormat="http://www.java.com/java" >
+      <script> System.out.println("Estado aprobado, felicidades!");</script>
+    </scriptTask>
+    <endEvent id="_jbpm-unique-66" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <exclusiveGateway id="_jbpm-unique-69" name="Gateway" gatewayDirection="Diverging" />
+    <scriptTask id="_jbpm-unique-71" name="Notificar Rechazo" scriptFormat="http://www.java.com/java" >
+      <script>System.out.println("Rechazado, intente otro día");</script>
+    </scriptTask>
+    <userTask id="_jbpm-unique-75" name="Eleccion user" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <tns:script></tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>/*PedidoDepartamentoCompras localdata = (PedidoDepartamentoCompras)kcontext.getVariable("mensaje");
+localdata.setMensaje("Deepi");
+
+kcontext.setVariable("mensaje", localdata);*/
+System.out.println("lalala2");
+System.out.println("lalala -&gt; " + (PedidoDepartamentoCompras)kcontext.getVariable("notificacion"));
+kcontext.setVariable("notificacion",notificacion);</tns:script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-75_notificacionInput" name="notificacion" />
+        <dataInput id="_jbpm-unique-75_LocaleInput" name="Locale" />
+        <dataInput id="_jbpm-unique-75_CommentInput" name="Comment" />
+        <dataInput id="_jbpm-unique-75_NotStartedReassignInput" name="NotStartedReassign" />
+        <dataInput id="_jbpm-unique-75_CreatedByInput" name="CreatedBy" />
+        <dataInput id="_jbpm-unique-75_TaskNameInput" name="TaskName" />
+        <dataInput id="_jbpm-unique-75_NodeNameInput" name="NodeName" />
+        <dataInput id="_jbpm-unique-75_PriorityInput" name="Priority" />
+        <dataInput id="_jbpm-unique-75_SkippableInput" name="Skippable" />
+        <dataInput id="_jbpm-unique-75_GroupIdInput" name="GroupId" />
+        <dataOutput id="_jbpm-unique-75_notificacionOutput" name="notificacion" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-75_notificacionInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_LocaleInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_CommentInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_NotStartedReassignInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_CreatedByInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_NodeNameInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_PriorityInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_SkippableInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-75_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-75_notificacionOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>notificacion</sourceRef>
+        <targetRef>_jbpm-unique-75_notificacionInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_LocaleInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">en-UK</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_LocaleInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Hola</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_NotStartedReassignInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">[users:sales-rep|groups:salesgroup]@[]</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_NotStartedReassignInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_CreatedByInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_CreatedByInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Eleccion usuario</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_NodeNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Eleccion user</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_NodeNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-75_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">SUSCRIPCION</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-75_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-75_notificacionOutput</sourceRef>
+        <targetRef>notificacion</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression></formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <endEvent id="_jbpm-unique-3" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_jbpm-unique-69-_jbpm-unique-65" sourceRef="_jbpm-unique-69" targetRef="_jbpm-unique-65" name="Aprobado" >
+      <conditionExpression xsi:type="tFormalExpression" >return notificacion.getRespuesta();</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-65-_jbpm-unique-66" sourceRef="_jbpm-unique-65" targetRef="_jbpm-unique-66" />
+    <sequenceFlow id="_jbpm-unique-75-_jbpm-unique-69" sourceRef="_jbpm-unique-75" targetRef="_jbpm-unique-69" />
+    <sequenceFlow id="_jbpm-unique-69-_jbpm-unique-71" sourceRef="_jbpm-unique-69" targetRef="_jbpm-unique-71" name="Rechazado" >
+      <conditionExpression xsi:type="tFormalExpression" >return !notificacion.getRespuesta();</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_jbpm-unique-75" sourceRef="_1" targetRef="_jbpm-unique-75" />
+    <sequenceFlow id="_jbpm-unique-71-_jbpm-unique-3" sourceRef="_jbpm-unique-71" targetRef="_jbpm-unique-3" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.sample.bpmn" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="93" y="15" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-65" >
+        <dc:Bounds x="338" y="64" width="183" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-66" >
+        <dc:Bounds x="651" y="64" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-69" >
+        <dc:Bounds x="273" y="136" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-71" >
+        <dc:Bounds x="343" y="207" width="186" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-75" >
+        <dc:Bounds x="34" y="134" width="162" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-3" >
+        <dc:Bounds x="659" y="207" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-69-_jbpm-unique-65" >
+        <di:waypoint x="297" y="160" />
+        <di:waypoint x="429" y="88" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-65-_jbpm-unique-66" >
+        <di:waypoint x="429" y="88" />
+        <di:waypoint x="675" y="88" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-75-_jbpm-unique-69" >
+        <di:waypoint x="115" y="158" />
+        <di:waypoint x="297" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-69-_jbpm-unique-71" >
+        <di:waypoint x="297" y="160" />
+        <di:waypoint x="436" y="231" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_jbpm-unique-75" >
+        <di:waypoint x="117" y="39" />
+        <di:waypoint x="115" y="158" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-71-_jbpm-unique-3" >
+        <di:waypoint x="436" y="231" />
+        <di:waypoint x="683" y="231" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>
